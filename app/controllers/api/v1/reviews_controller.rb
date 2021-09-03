@@ -2,12 +2,14 @@
 
 module Api
   module V1
-    class ReviewsController
+    class ReviewsController < ApplicationController
+      skip_before_action :verify_authenticity_token
+
       def create
         review = Review.new(review_params)
 
         if review.save
-          render json: ReviewSerializer(review).serialized_json
+          render json: ReviewSerializer.new(review).serialized_json
         else
           render json: { error: review.error.messages }, status: 422
         end

@@ -3,6 +3,8 @@
 module Api
   module V1
     class AirlinesController < ApplicationController
+      skip_before_action :verify_authenticity_token
+
       def index
         airlines = Airline.all
 
@@ -12,7 +14,7 @@ module Api
       def show
         airline = Airline.find_by(slug: params[:slug])
 
-        render json: AirlineSerializer.new(airlines, options).serialized_json
+        render json: AirlineSerializer.new(airline, options).serialized_json
       end
 
       def create
